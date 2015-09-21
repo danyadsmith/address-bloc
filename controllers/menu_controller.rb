@@ -28,9 +28,7 @@ class MenuController
         main_menu
       when 2
         system "clear"
-        puts "Entry Number: "
-        n = gets.chomp
-        view_entry_number(n)
+        view_entry_number
         main_menu
       when 3
         system "clear"
@@ -91,9 +89,20 @@ class MenuController
   def read_csv
   end
 
-  def view_entry_number(n)
-    entry = @address_book[n]
-    puts entry.to_s
+  def view_entry_number
+    system "clear"
+    puts "Entry Number: "
+    n = gets.chomp.to_i
+
+    system "clear"
+    if n < @address_book.entries.count 
+      entry = @address_book.entries[n]
+      puts "#{n}.\n   Name: #{entry.name}\n   Phone: #{entry.phone_number}\n   Email: #{entry.email}"
+    else
+      puts "#{n} is not a valid entry."
+    end
+    
+    main_menu
   end
 
   def entry_submenu(entry)
