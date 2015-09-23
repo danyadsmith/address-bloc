@@ -51,6 +51,29 @@ class MenuController
         main_menu
     end
   end
+
+  def entry_submenu(entry)
+
+    puts "n - next entry"
+    puts "d - delete entry"
+    puts "e - edit this entry"
+    puts "m - return to main menu"
+
+    selection = gets.chomp
+
+    case selection
+    when "n"
+    when "d"
+    when "e"
+    when "m"
+      system "clear"
+      main_menu
+    else
+      system "clear"
+      puts "#{selection} is not a valid input"
+      entries_submenu(entry)
+    end
+  end  
   
   def view_all_entries
 
@@ -64,6 +87,22 @@ class MenuController
     system "clear"
     puts "End of entries"
   end
+
+  def view_entry_number
+    system "clear"
+    puts "Entry Number: "
+    n = gets.chomp.to_i
+
+    system "clear"
+    if n < @address_book.entries.count 
+      entry = @address_book.entries[n]
+      puts "#{n}.\n   Name: #{entry.name}\n   Phone: #{entry.phone_number}\n   Email: #{entry.email}"
+    else
+      puts "#{n} is not a valid entry."
+    end
+    
+    main_menu
+  end  
 
   def create_entry
 
@@ -87,45 +126,29 @@ class MenuController
   end
 
   def read_csv
-  end
 
-  def view_entry_number
-    system "clear"
-    puts "Entry Number: "
-    n = gets.chomp.to_i
+    print "Enter CSV file to import: "
+    file_name = gets.chomp
 
-    system "clear"
-    if n < @address_book.entries.count 
-      entry = @address_book.entries[n]
-      puts "#{n}.\n   Name: #{entry.name}\n   Phone: #{entry.phone_number}\n   Email: #{entry.email}"
-    else
-      puts "#{n} is not a valid entry."
+    if file_name.empty?
+      system "clear"
+      puts "No CSV file read"
+      main_menu
+    end
+
+    begin
+      entry_count = @address_book.import_from_csv(file_name).count
+      system "clear"
+      puts "#{entry_count} new entries added from #{file_name}"
+    rescue
+      puts "#{file_name} is not a valid CSV file, please enter the name of a valid file: "
+      read_csv
     end
     
-    main_menu
   end
 
-  def entry_submenu(entry)
 
-    puts "n - next entry"
-    puts "d - delete entry"
-    puts "e - edit this entry"
-    puts "m - return to main menu"
 
-    selection = gets.chomp
 
-    case selection
-    when "n"
-    when "d"
-    when "e"
-    when "m"
-      system "clear"
-      main_menu
-    else
-      system "clear"
-      puts "#{selection} is not a valid input"
-      entries_submenu(entry)
-    end
-  end
 
 end
